@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  
  http://www.cocos2d-x.org
@@ -33,12 +33,33 @@ public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
+
+	void update(float delta) override;
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+	//cocos2d::Sprite* sprite;
+	//cocos2d::Sprite* sprite2;
+
+	cocos2d::Sprite* sprite[100];
+
+	//int counter;
+
+	//// 移動方向 0:左移動 1:下移動 2:右移動 3:上移動
+	//int state;
+
+	//float rot;
+
+	//float blue;
+
+	//float opacity;
+
+
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  
  http://www.cocos2d-x.org
@@ -49,7 +49,7 @@ bool HelloWorld::init()
         return false;
     }
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     /////////////////////////////
@@ -101,20 +101,159 @@ bool HelloWorld::init()
         this->addChild(label, 1);
     }
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+    // ここにコードを書く
 
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
+	//乱数の初期化
+	srand(time(nullptr));
+
+	// テクスチャの読み込み
+	Texture2D* texture = Director::getInstance()->getTextureCache()->addImage("sample05.png");
+
+	// テクスチャからアニメーションパターンを指定する
+	SpriteFrame* frame0 = SpriteFrame::createWithTexture(texture, Rect(32 * 0, 32 * 2, 32, 32));
+	SpriteFrame* frame1 = SpriteFrame::createWithTexture(texture, Rect(32 * 1, 32 * 2, 32, 32));
+	SpriteFrame* frame2 = SpriteFrame::createWithTexture(texture, Rect(32 * 2, 32 * 2, 32, 32));
+	SpriteFrame* frame3 = SpriteFrame::createWithTexture(texture, Rect(32 * 1, 32 * 2, 32, 32));
+
+	// 全てのアニメーションパターンをまとめる
+	Vector<SpriteFrame*> animFrames(4);
+	animFrames.pushBack(frame0);
+	animFrames.pushBack(frame1);
+	animFrames.pushBack(frame2);
+	animFrames.pushBack(frame3);
+
+	// アニメーションパターンからSpriteを生成
+	Sprite* sprite = Sprite::createWithSpriteFrame(frame0);
+	sprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	sprite->setScale(10.0f);	// 拡大
+	this->addChild(sprite);
+
+	// 一コマ分の時間を指定してアニメーションデータを生成
+	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.2f);
+	// アニメーションデータからアニメーションアクションを生成
+	Animate* animate = Animate::create(animation);
+	// 指定回数繰り返すアクションを生成
+	Repeat* repeat = Repeat::create(animate, 5);
+	// アクションの実行
+	sprite->runAction(repeat);
+
+
+
+	////授業
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	sprite[i] = Sprite::create("Eye.png");
+	//	this->addChild(sprite[i]);
+	//	sprite[i]->setPosition(Vec2(i * 200, visibleSize.height / 2.0f));
+	//	sprite[i]->setScale(0.01f);
+
+	//	float mx, my;
+	//	//rand()/RND_MAX = 1　だから大きさをかけると範囲が指定できる。
+	//	//実際問題関数書いたほうが便利でいいね。
+	//	
+	//	//この場合 -250 ~ +250 の範囲になる。
+	//	mx = (float)rand()/RAND_MAX * 500 - 250;
+	//	my = (float)rand()/RAND_MAX * 500 - 250;
+
+	//	MoveBy* action1 = MoveBy::create(1.0f, Vec2(mx, my));
+	//	sprite[i]->runAction(action1);
+	//}
+
+	////やってみよう１
+	//for (int i = 5; i < 7; i++)
+	//{
+	//	sprite[i] = Sprite::create("harinezumi.png");
+	//	this->addChild(sprite[i]);
+	//	sprite[i]->setPosition(Vec2((i - 3) * 100, visibleSize.height / 2.0f));
+	//	sprite[i]->setScale(0.1f);
+
+	//	JumpBy* action1 = JumpBy::create(1.0f, Vec2(200, 0), 100, 2);
+	//	sprite[i]->runAction(action1);
+	//}
+
+	////やってみよう２
+	//for (int i = 10; i < 20; i++)
+	//{
+	//	sprite[i] = Sprite::create("harinezumi.png");
+	//	this->addChild(sprite[i]);
+	//	sprite[i]->setPosition(Vec2((i - 10) * 100, visibleSize.height / 3.0f));
+	//	sprite[i]->setScale(0.1f);
+
+	//	JumpBy* action1 = JumpBy::create(1.0f, Vec2(200, 0), 100, 2);
+	//	sprite[i]->runAction(action1);
+	//}
+
+	////やってみよう３
+	//for (int i = 20; i < 30; i++)
+	//{
+	//	float sx, sy;
+	//	sx = (float)rand() / RAND_MAX * visibleSize.width - visibleSize.width / 2.0f;
+	//	sy = (float)rand() / RAND_MAX * visibleSize.height - visibleSize.height / 2.0f;
+
+	//	sprite[i] = Sprite::create("Eye.png");
+	//	this->addChild(sprite[i]);
+	//	sprite[i]->setPosition(Vec2((i - 20) * 100, visibleSize.height / 3.0f));
+	//	sprite[i]->setScale(0.3f);
+	//	
+	//	float ex, ey;
+	//	ex = (float)rand() / RAND_MAX * visibleSize.width - visibleSize.width / 2.0f;
+	//	ey = (float)rand() / RAND_MAX * visibleSize.height - visibleSize.height / 2.0f;
+
+	//	MoveBy* action1 = MoveBy::create(1.0f, Vec2(ex,ey));
+	//	sprite[i]->runAction(action1);
+	//}
+
+	////スプライトの生成
+	//sprite = Sprite::create("nezumi.jpg");
+	//this->addChild(sprite);
+	//sprite->setPosition(Vec2(visibleSize.width/2.0f, visibleSize.height/2.0f));
+	//sprite->setScale(0.1f);
+
+	////アクション１の生成
+	//MoveBy* action1 = MoveBy::create(1.0f, Vec2(200, 100));
+
+	////ScaleTo* action1 = ScaleTo::create(1.0f, 5.0f);
+	////JumpBy* action1 = JumpBy::create(1.0f, Vec2(200, 0), 300, 3);
+	////ccBezierConfig conf;
+	////conf.controlPoint_1 = Vec2(200, 200);
+	////conf.controlPoint_2 = Vec2(500, 200);
+	////conf.endPosition = Vec2(500, 500);
+	//////////BezierTo* action1 = BezierTo::create(2.0f, conf);
+
+	//sprite->runAction(action1);
+
+	//// Spriteの基準点を指定する
+	//// (0,0)・・・左下
+	//// (1,1)・・・右上
+	////sprite->setAnchorPoint(Vec2(0, 1));
+	//
+	////acrion2の生成
+	//sprite2 = Sprite::create("harinezumi.png");
+	//this->addChild(sprite2);
+	//sprite2->setPosition(Vec2(600, visibleSize.height / 2.0f));
+	//sprite2->setScale(0.1f);
+
+	//sprite->setVisible(true);
+	//sprite->setRotation(135.0f);
+	//sprite->setFlippedX(true);
+	//                           X    Y    W    H
+	//sprite->setTextureRect(Rect(32, 32, 32, 32));
+	//sprite->setOpacity(255);
+	// updateを有効にする
+	
+	this->scheduleUpdate();
+
+	//counter = 0;
+
+	//// 左移動
+	//state = 0;
+
+	//rot = 0;
+
+	//blue = 0;
+
+	//opacity = 0;
+
     return true;
 }
 
@@ -130,4 +269,8 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void HelloWorld::update(float delta)
+{
 }
